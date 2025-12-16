@@ -79,6 +79,8 @@
         .subpage.active { display: block; }
         .subpage-header { display: flex; align-items: center; margin-bottom: 25px; }
         .btn-back { background: white; border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; }
+        
+        /* --- EXIT PAGE --- */
         #page-exit { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 30px; box-sizing: border-box; text-align: center; }
         #page-exit.active { display: flex; }
         .exit-icon { font-size: 80px; color: var(--success); margin-bottom: 20px; filter: drop-shadow(0 10px 20px rgba(46, 213, 115, 0.3)); }
@@ -114,25 +116,16 @@
         #map-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 300; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(8px); }
         #map-modal.active { display: flex; }
         .map-frame { background: white; width: 95%; max-width: 400px; border-radius: 28px; padding: 20px; position: relative; }
-        
-        .supermarket-floor { 
-            position: relative; width: 100%; height: 450px; background: #f4f6f9; 
-            border: 3px solid #333; border-radius: 8px; margin-top: 15px; overflow: hidden; 
-        }
-
-        /* STILI SCAFFALI */
+        .supermarket-floor { position: relative; width: 100%; height: 450px; background: #f4f6f9; border: 3px solid #333; border-radius: 8px; margin-top: 15px; overflow: hidden; }
         .shelf-block { position: absolute; border-radius: 3px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 8px; font-weight: 800; color: rgba(255,255,255,0.95); line-height: 1.1; box-shadow: 0 2px 4px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.1); }
-        
-        .zone-green { background: #4cd137; border-bottom: 3px solid #44bd32; } /* Ortofrutta */
-        .zone-blue { background: #00a8ff; border-bottom: 3px solid #0097e6; } /* Frigo */
-        .zone-red { background: #e84118; border-bottom: 3px solid #c23616; } /* Carne */
-        .zone-orange { background: #fbc531; border-bottom: 3px solid #e1b12c; } /* Forno */
-        .zone-gray { background: #7f8c8d; border-bottom: 3px solid #2c3e50; } /* Scaffali */
-        .zone-purple { background: #9c88ff; border-bottom: 3px solid #8c7ae6; } /* Tech/Casa */
-        
+        .zone-green { background: #4cd137; border-bottom: 3px solid #44bd32; } 
+        .zone-blue { background: #00a8ff; border-bottom: 3px solid #0097e6; } 
+        .zone-red { background: #e84118; border-bottom: 3px solid #c23616; } 
+        .zone-orange { background: #fbc531; border-bottom: 3px solid #e1b12c; } 
+        .zone-gray { background: #7f8c8d; border-bottom: 3px solid #2c3e50; } 
+        .zone-purple { background: #9c88ff; border-bottom: 3px solid #8c7ae6; } 
         .checkout-zone { position: absolute; bottom: 0; right: 0; width: 25%; height: 15%; background: #dfe6e9; border-top-left-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #636e72; border-left: 1px solid #b2bec3; border-top: 1px solid #b2bec3; }
         .entrance-zone { position: absolute; bottom: 0; left: 40%; width: 20%; height: 5px; background: var(--success); }
-
         .pin-target { width: 24px; height: 24px; background: var(--danger); border: 3px solid white; border-radius: 50%; position: absolute; z-index: 30; box-shadow: 0 5px 15px rgba(255, 59, 48, 0.4); transform: translate(-50%, -50%); animation: pulse 1.5s infinite; display: none; }
         .pin-user { width: 14px; height: 14px; background: var(--primary); border: 2px solid white; border-radius: 50%; position: absolute; z-index: 20; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transform: translate(-50%, -50%); }
 
@@ -141,7 +134,6 @@
         .avatar { width: 80px; height: 80px; background: linear-gradient(135deg, #ddd, #f0f0f0); border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #888; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .menu-item { padding: 18px; border-bottom: 1px solid #f5f5f5; display:flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
         .menu-item:active { background: #fafafa; }
-        
         .order-card { background: white; padding: 20px; border-radius: 16px; margin-bottom: 15px; border: 1px solid #eee; }
         .order-head { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; }
         .status-badge { padding: 4px 8px; border-radius: 10px; font-size: 10px; text-transform: uppercase; }
@@ -167,6 +159,18 @@
             box-shadow: inset 0 0 50px rgba(46, 213, 115, 0.5); pointer-events: none;
         }
         .scan-tick { font-size: 100px; color: var(--success); animation: popIn 0.3s ease-out forwards; filter: drop-shadow(0 0 10px rgba(46, 213, 115, 0.5)); }
+
+        /* --- SERVICE MODAL STYLES --- */
+        .service-option {
+            background: white; border: 2px solid #eee; border-radius: 16px; padding: 15px; margin-bottom: 10px;
+            display: flex; align-items: center; cursor: pointer; transition: all 0.2s;
+        }
+        .service-option:active, .service-option.selected { border-color: var(--primary); background: #f0f4ff; }
+        .service-icon { 
+            width: 40px; height: 40px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #666; margin-right: 15px; flex-shrink: 0;
+        }
+        .service-option.selected .service-icon { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
@@ -308,38 +312,71 @@
 <div id="map-modal">
     <div class="map-frame">
         <h3 style="text-align:center; margin-top:0;">Mappa Supermercato</h3>
-        
         <div class="supermarket-floor">
             <div class="shelf-block zone-green" style="bottom:10%; left:0; width:30%; height:25%;">ORTOFRUTTA<br><i class="material-icons" style="font-size:14px">grass</i></div>
             <div class="shelf-block zone-blue" style="top:25%; left:0; width:15%; height:40%;">FRIGO<br>LATTICINI</div>
-
             <div class="shelf-block zone-orange" style="top:0; left:20%; width:25%; height:20%;">FORNO<br>PANE</div>
             <div class="shelf-block zone-red" style="top:0; right:20%; width:25%; height:20%;">MACELLERIA<br>PESCHERIA</div>
-
+            
             <div class="shelf-block zone-gray" style="top:35%; left:25%; width:12%; height:35%;">PASTA &<br>SUGHI</div>
             <div class="shelf-block zone-gray" style="top:35%; left:44%; width:12%; height:35%;">DOLCI &<br>CAFFÈ</div>
             <div class="shelf-block zone-gray" style="top:35%; left:63%; width:12%; height:35%;">CURA &<br>PULIZIA</div>
 
             <div class="shelf-block zone-blue" style="bottom:20%; right:0; width:15%; height:30%;">BIBITE<br>& VINI</div>
             <div class="shelf-block zone-purple" style="top:30%; right:0; width:15%; height:30%;">TECH<br>& CASA</div>
-
             <div class="entrance-zone"></div>
             <div style="position:absolute; bottom:6px; left:45%; font-size:8px; font-weight:bold;">ENTRATA</div>
             <div class="checkout-zone">CASSE</div>
-
             <div class="pin-user" style="bottom:15%; left:50%;"></div>
             <div id="target-pin" class="pin-target"></div>
         </div>
-
         <div style="text-align:center; font-size:10px; color:#666; margin-top:10px;">Tu sei il puntino blu.</div>
         <button onclick="closeMap()" style="width:100%; padding:15px; margin-top:15px; background:#1a1a1a; color:white; border:none; border-radius: 16px; font-weight: bold;">Chiudi Mappa</button>
     </div>
 </div>
 
+<div id="service-modal" class="auth-page" style="display:none; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px);">
+    <div class="login-card" style="max-width: 320px;">
+        <i class="material-icons" style="font-size: 50px; color: var(--primary); margin-bottom: 10px;">shopping_bag</i>
+        <h2 style="font-size: 22px; margin-bottom: 10px;">Spesa Completata!</h2>
+        <p style="color:#666; margin-bottom: 20px;">Vuoi un aiuto con i sacchetti?</p>
+        
+        <div class="service-option" onclick="processServiceChoice('none')">
+            <div class="service-icon"><i class="material-icons">exit_to_app</i></div>
+            <div style="text-align:left;">
+                <div style="font-weight:bold;">No, esco da solo</div>
+                <div style="font-size:11px; color:#888;">Esci col carrello</div>
+            </div>
+        </div>
+
+        <div class="service-option" onclick="processServiceChoice('car')">
+            <div class="service-icon"><i class="material-icons">directions_car</i></div>
+            <div style="text-align:left;">
+                <div style="font-weight:bold;">Carico in Auto</div>
+                <div style="font-size:11px; color:#888;">Lascia il carrello e ritira</div>
+            </div>
+        </div>
+
+        <div class="service-option" onclick="processServiceChoice('delivery')">
+            <div class="service-icon"><i class="material-icons">local_shipping</i></div>
+            <div style="text-align:left;">
+                <div style="font-weight:bold;">Consegna a Casa</div>
+                <div style="font-size:11px; color:#888;">Lascia il carrello e vai</div>
+            </div>
+        </div>
+
+        <div id="cart-input-step" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
+            <p style="font-size:14px; font-weight:bold;">Inserisci il numero del carrello:</p>
+            <input type="number" id="service-cart-number" class="login-input" placeholder="Es. 104" style="text-align:center; font-size:20px;">
+            <button class="login-btn accent" onclick="confirmServiceWithCart()">CONFERMA</button>
+        </div>
+    </div>
+</div>
+
 <div id="page-exit">
     <i class="material-icons exit-icon">check_circle</i>
-    <h2 style="font-size:28px; margin-bottom:10px;">Tutto Fatto!</h2>
-    <p style="color:#666;">Scansiona questo codice al tornello per uscire.</p>
+    <h2 id="exit-title" style="font-size:28px; margin-bottom:10px;">Tutto Fatto!</h2>
+    <p id="exit-msg" style="color:#666;">Scansiona questo codice al tornello per uscire.</p>
     <div style="margin: 30px 0; padding:15px; background:white; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid #eee;">
         <img id="qr-exit-img" src="" alt="QR Uscita" style="width: 220px; display:block;">
     </div>
@@ -360,48 +397,33 @@
 
 <script>
     const database = [
-        // PASTA & SUGHI
         { id: '1', name: 'Pasta Barilla 500g', price: 1.20, barcode: '8076809513753', icon: 'restaurant', loc: {top:52, left:31} },
         { id: '2', name: 'Passata Mutti 700g', price: 1.45, barcode: '8005110170305', icon: 'local_dining', loc: {top:52, left:31} },
         { id: '3', name: 'Olio EVO Carapelli 1L', price: 6.99, barcode: '8002470001000', icon: 'liquor', loc: {top:60, left:31} },
         { id: '4', name: 'Riso Gallo 1kg', price: 2.80, barcode: '8001420000001', icon: 'grain', loc: {top:45, left:31} },
         { id: '5', name: 'Tonno Rio Mare 3x80g', price: 4.50, barcode: '8004030000001', icon: 'set_meal', loc: {top:55, left:31} },
-        
-        // DOLCI & CAFFÈ
         { id: '6', name: 'Nutella 750g', price: 6.50, discount: 4.99, barcode: '8000500003787', icon: 'cookie', loc: {top:52, left:50} },
         { id: '7', name: 'Biscotti Mulino Bianco', price: 2.99, barcode: '8076809500001', icon: 'cookie', loc: {top:52, left:50} },
         { id: '8', name: 'Caffè Lavazza 250g', price: 3.99, barcode: '8000070010001', icon: 'coffee', loc: {top:45, left:50} },
         { id: '9', name: 'Cereali Kellogg\'s', price: 3.50, barcode: '5053827000001', icon: 'breakfast_dining', loc: {top:45, left:50} },
         { id: '10', name: 'Marmellata Fragola', price: 2.20, barcode: '8001000000001', icon: 'kitchen', loc: {top:60, left:50} },
-
-        // CURA & PULIZIA
         { id: '11', name: 'Detersivo Dash 25 Lav.', price: 5.99, barcode: '8001090000001', icon: 'wash', loc: {top:60, left:69} },
         { id: '12', name: 'Shampoo Pantene', price: 3.20, barcode: '5410076000001', icon: 'shower', loc: {top:50, left:69} },
         { id: '13', name: 'Dentifricio Colgate', price: 1.80, barcode: '8718951000001', icon: 'clean_hands', loc: {top:45, left:69} },
         { id: '14', name: 'Carta Igienica 4 Rot.', price: 2.50, barcode: '8000000000002', icon: 'layers', loc: {top:55, left:69} },
         { id: '15', name: 'Sapone Mani Neutro', price: 1.50, barcode: '8000000000003', icon: 'soap', loc: {top:50, left:69} },
-
-        // FRIGO & LATTICINI
         { id: '16', name: 'Latte Granarolo 1L', price: 1.60, barcode: '8000000000004', icon: 'local_drink', loc: {top:45, left:8} },
         { id: '17', name: 'Mozzarella S.Lucia', price: 3.50, barcode: '8000000000005', icon: 'circle', loc: {top:50, left:8} },
         { id: '18', name: 'Yogurt Muller 2x125g', price: 1.20, barcode: '8000000000006', icon: 'icecream', loc: {top:40, left:8} },
         { id: '19', name: 'Uova Fresche 6pz', price: 2.10, barcode: '8000000000007', icon: 'egg', loc: {top:35, left:8} },
-        
-        // ORTOFRUTTA
         { id: '20', name: 'Banane 1kg', price: 1.99, barcode: '8000000000008', icon: 'nightlife', loc: {top:82, left:15} },
         { id: '21', name: 'Mele Golden 1kg', price: 2.50, barcode: '8000000000009', icon: 'circle', loc: {top:82, left:15} },
         { id: '22', name: 'Insalata Iceberg', price: 1.20, barcode: '8000000000010', icon: 'park', loc: {top:88, left:15} },
-
-        // ACQUA & BIBITE
         { id: '23', name: 'Acqua Nat. 6x1.5L', price: 2.40, barcode: '8002270014901', icon: 'water_drop', loc: {top:80, left:90} },
         { id: '24', name: 'Coca Cola 1.5L', price: 1.80, barcode: '5449000000996', icon: 'local_bar', loc: {top:80, left:90} },
         { id: '25', name: 'Birra Moretti 66cl', price: 1.30, barcode: '8001435000001', icon: 'sports_bar', loc: {top:85, left:90} },
-
-        // MACELLERIA
         { id: '26', name: 'Petto di Pollo 500g', price: 5.50, barcode: '8000000000011', icon: 'restaurant', loc: {top:10, left:68} },
         { id: '27', name: 'Hamburger 2pz', price: 4.00, barcode: '8000000000012', icon: 'lunch_dining', loc: {top:10, left:68} },
-
-        // TECH
         { id: '28', name: 'iPhone Case', price: 15.00, discount: 9.99, barcode: '444444', icon: 'smartphone', loc: {top:45, left:92} },
         { id: '29', name: 'Cuffie Sony', price: 35.00, barcode: '555555', icon: 'headphones', loc: {top:45, left:92} },
         { id: '30', name: 'Caricabatterie USB', price: 12.00, barcode: '666666', icon: 'electrical_services', loc: {top:55, left:92} }
@@ -420,6 +442,7 @@
     let currentUser = null;
     let scanCooldown = false;
     let userReservations = [];
+    let selectedServiceType = null;
 
     // --- LOGICA APP ---
     function createProductCard(p, isSearch = false) {
@@ -581,14 +604,59 @@
     }
     function updateBadge() { document.getElementById('cart-badge').style.display = Object.keys(cart).length?'inline':'none'; }
 
+    // --- NUOVA LOGICA DI PAGAMENTO E SERVIZI ---
     function pay() { 
         if(Object.keys(cart).length === 0) return;
         if(confirm('Confermi il pagamento?')) {
-            const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=EXIT-PASSPHRASE-" + Date.now();
-            document.getElementById('qr-exit-img').src = qrUrl;
-            cart={}; updateBadge(); document.getElementById('page-exit').classList.add('active');
+            // Invece di uscire subito, mostra la modale dei servizi
+            document.getElementById('service-modal').style.display = 'flex';
         }
     }
+
+    function processServiceChoice(type) {
+        selectedServiceType = type;
+        
+        // Se sceglie 'none', esci subito
+        if (type === 'none') {
+            document.getElementById('service-modal').style.display = 'none';
+            finalizeExit("Scansiona al tornello per uscire.");
+            return;
+        }
+
+        // Se sceglie Carico in Auto o Consegna, mostra input carrello
+        // Evidenzia la scelta
+        document.querySelectorAll('.service-option').forEach(el => el.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+        
+        // Mostra input
+        document.getElementById('cart-input-step').style.display = 'block';
+        document.getElementById('service-cart-number').focus();
+    }
+
+    function confirmServiceWithCart() {
+        const cartNum = document.getElementById('service-cart-number').value;
+        if (!cartNum) { alert("Inserisci il numero del carrello."); return; }
+
+        document.getElementById('service-modal').style.display = 'none';
+        
+        let msg = "";
+        if (selectedServiceType === 'car') {
+            msg = `Lascia il carrello ${cartNum} all'area dedicata.\nRecati alla Piazzola di Carico con l'auto.`;
+        } else if (selectedServiceType === 'delivery') {
+            msg = `Lascia il carrello ${cartNum} all'area spedizioni.\nLa spesa ti sarà consegnata a casa.`;
+        }
+        
+        finalizeExit(msg);
+    }
+
+    function finalizeExit(message) {
+        const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=EXIT-PASSPHRASE-" + Date.now();
+        document.getElementById('qr-exit-img').src = qrUrl;
+        document.getElementById('exit-msg').innerText = message;
+        cart={}; updateBadge(); 
+        document.getElementById('page-exit').classList.add('active');
+    }
+
     function finishShopping() { document.getElementById('page-exit').classList.remove('active'); switchTab('offers'); }
     
     function initCrowd() { 
