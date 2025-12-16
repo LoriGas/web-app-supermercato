@@ -204,7 +204,7 @@
     <div class="app-logo"><i class="material-icons">storefront</i> YourNextMarket</div>
     <div class="crowd-widget">
         <span class="dot" style="background: #2ed573;"></span>
-        <span id="crowd-status">LIVE: Caricamento...</span>
+        <span id="crowd-status">Affluenza: Caricamento...</span>
     </div>
 </header>
 
@@ -719,7 +719,7 @@
         setInterval(() => {
             const count = Math.floor(Math.random() * 101); const label = document.getElementById('crowd-status'); const dot = document.querySelector('.crowd-widget .dot'); let color;
             if (count <= 50) color = '#2ed573'; else if (count <= 75) color = '#ffa502'; else color = '#ff4757';
-            label.innerText = "LIVE: " + count + " presenti"; dot.style.background = color; dot.style.boxShadow = `0 0 8px ${color}`;
+            label.innerText = "Affluenza: " + count + " presenti"; dot.style.background = color; dot.style.boxShadow = `0 0 8px ${color}`;
         }, 4000); 
     }
 
