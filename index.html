@@ -77,7 +77,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            gap: 10px; /* Aggiunto gap per evitare contatti indesiderati */
+            gap: 10px; 
         }
 
         .app-logo { 
@@ -88,7 +88,7 @@
             display: flex; 
             align-items: center; 
             gap: 8px; 
-            white-space: nowrap; /* Impedisce al logo di andare a capo */
+            white-space: nowrap; 
         }
         
         .crowd-widget { 
@@ -101,24 +101,23 @@
             font-size: 11px; 
             font-weight: 700; 
             border: 1px solid rgba(0, 85, 255, 0.1); 
-            white-space: nowrap; /* FIX MOBILE: Testo su una riga */
-            flex-shrink: 0; /* FIX MOBILE: Il widget non si schiaccia */
+            white-space: nowrap; 
+            flex-shrink: 0; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
 
         .dot { 
             height: 8px; 
             width: 8px; 
-            min-width: 8px; /* FIX MOBILE: Mantiene la forma rotonda */
+            min-width: 8px; 
             border-radius: 50%; 
             display: inline-block; 
             margin-right: 6px; 
             box-shadow: 0 0 5px rgba(46, 213, 115, 0.5); 
             transition: background 0.5s, box-shadow 0.5s; 
-            flex-shrink: 0; /* FIX MOBILE */
+            flex-shrink: 0; 
         }
 
-        /* Regola per schermi piccolissimi (es. iPhone SE / Fold) */
         @media (max-width: 370px) {
             .app-logo { font-size: 18px; }
             .crowd-widget { font-size: 10px; padding: 5px 10px; }
@@ -415,8 +414,16 @@
         </div>
 
         <div id="cart-input-step" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
-            <p style="font-size:14px; font-weight:bold;">Inserisci il numero del carrello:</p>
-            <input type="number" id="service-cart-number" class="login-input" placeholder="Es. 104" style="text-align:center; font-size:20px;">
+            <div id="grp-cart">
+                <p style="font-size:14px; font-weight:bold;">Inserisci il numero del carrello:</p>
+                <input type="number" id="service-cart-number" class="login-input" placeholder="Es. 104" style="text-align:center; font-size:20px;">
+            </div>
+            
+            <div id="grp-address" style="display:none; margin-top:10px;">
+                <p style="font-size:14px; font-weight:bold;">Indirizzo di spedizione:</p>
+                <input type="text" id="service-address" class="login-input" placeholder="Via Roma 1, Milano" style="font-size:16px;">
+            </div>
+
             <button class="login-btn accent" onclick="confirmServiceWithCart()">CONFERMA</button>
         </div>
     </div>
@@ -704,19 +711,34 @@
             return;
         }
 
-        // Se sceglie Carico in Auto o Consegna, mostra input carrello
         // Evidenzia la scelta
         document.querySelectorAll('.service-option').forEach(el => el.classList.remove('selected'));
         event.currentTarget.classList.add('selected');
         
-        // Mostra input
+        // Mostra il form
         document.getElementById('cart-input-step').style.display = 'block';
+        
+        // Reset visibilità input
+        document.getElementById('grp-cart').style.display = 'block';
+        document.getElementById('grp-address').style.display = 'none';
+
+        // Se consegna a casa, mostra anche l'indirizzo
+        if (type === 'delivery') {
+            document.getElementById('grp-address').style.display = 'block';
+        }
+        
         document.getElementById('service-cart-number').focus();
     }
 
     function confirmServiceWithCart() {
         const cartNum = document.getElementById('service-cart-number').value;
         if (!cartNum) { alert("Inserisci il numero del carrello."); return; }
+        
+        let address = "";
+        if (selectedServiceType === 'delivery') {
+            address = document.getElementById('service-address').value;
+            if(!address) { alert("Inserisci l'indirizzo di spedizione."); return; }
+        }
 
         document.getElementById('service-modal').style.display = 'none';
         
@@ -724,7 +746,7 @@
         if (selectedServiceType === 'car') {
             msg = `Lascia il carrello ${cartNum} all'area dedicata.\nRecati alla Piazzola di Carico con l'auto.`;
         } else if (selectedServiceType === 'delivery') {
-            msg = `Lascia il carrello ${cartNum} all'area spedizioni.\nLa spesa ti sarà consegnata a casa.`;
+            msg = `Lascia il carrello ${cartNum} all'area spedizioni.\nSpedizione a: ${address}`;
         }
         
         finalizeExit(msg);
@@ -784,7 +806,7 @@
             if (window.innerWidth < 380) {
                 label.innerText = count + " presenti"; 
             } else {
-                label.innerText = "Affluenza: " + count + " presenti"; 
+                label.innerText = "Affluenza:" + count + " utenti"; 
             }
 
             dot.style.background = color; 
