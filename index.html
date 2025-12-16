@@ -65,12 +65,65 @@
         .switch-auth-link { margin-top: 25px; font-size: 14px; color: #666; cursor: pointer; padding: 10px;}
         .switch-auth-link b { color: var(--primary); font-weight: 700; }
 
-        /* --- HEADER --- */
-        header { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); padding: 15px 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
-        .app-logo { font-size: 20px; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+        /* --- HEADER & WIDGET FIX --- */
+        header { 
+            background: rgba(255,255,255,0.9); 
+            backdrop-filter: blur(10px); 
+            padding: 15px 20px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            border-bottom: 1px solid rgba(0,0,0,0.05); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 10px; /* Aggiunto gap per evitare contatti indesiderati */
+        }
+
+        .app-logo { 
+            font-size: 20px; 
+            font-weight: 900; 
+            color: var(--primary); 
+            letter-spacing: -0.5px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            white-space: nowrap; /* Impedisce al logo di andare a capo */
+        }
         
-        .crowd-widget { display: flex; align-items: center; background: #eef2ff; color: var(--primary-dark); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid rgba(0, 85, 255, 0.1); }
-        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; box-shadow: 0 0 5px rgba(46, 213, 115, 0.5); transition: background 0.5s, box-shadow 0.5s; }
+        .crowd-widget { 
+            display: flex; 
+            align-items: center; 
+            background: #eef2ff; 
+            color: var(--primary-dark); 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            border: 1px solid rgba(0, 85, 255, 0.1); 
+            white-space: nowrap; /* FIX MOBILE: Testo su una riga */
+            flex-shrink: 0; /* FIX MOBILE: Il widget non si schiaccia */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .dot { 
+            height: 8px; 
+            width: 8px; 
+            min-width: 8px; /* FIX MOBILE: Mantiene la forma rotonda */
+            border-radius: 50%; 
+            display: inline-block; 
+            margin-right: 6px; 
+            box-shadow: 0 0 5px rgba(46, 213, 115, 0.5); 
+            transition: background 0.5s, box-shadow 0.5s; 
+            flex-shrink: 0; /* FIX MOBILE */
+        }
+
+        /* Regola per schermi piccolissimi (es. iPhone SE / Fold) */
+        @media (max-width: 370px) {
+            .app-logo { font-size: 18px; }
+            .crowd-widget { font-size: 10px; padding: 5px 10px; }
+            header { padding: 15px 10px; }
+        }
 
         /* --- LAYOUT --- */
         .page { display: none; padding: 15px; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -400,7 +453,7 @@
         { id: '5', name: 'Tonno Rio Mare 3x80g', price: 4.50, barcode: '8004030000001', icon: 'set_meal', loc: {top:55, left:31} },
         { id: '6', name: 'Nutella 750g', price: 6.50, discount: 4.99, barcode: '8000500003787', icon: 'cookie', loc: {top:52, left:50} },
         { id: '7', name: 'Biscotti Mulino Bianco', price: 2.99, barcode: '8076809500001', icon: 'cookie', loc: {top:52, left:50} },
-        { id: '8', name: 'Caffè Lavazza 250g', price: 3.99, barcode: '8000070010001', icon: 'coffee', loc: {top:45, left:50} },
+        { id: '8', name: 'Caffè Lavazza 250g', price: 3.99, barcode: '8000000010001', icon: 'coffee', loc: {top:45, left:50} },
         { id: '9', name: 'Cereali Kellogg\'s', price: 3.50, barcode: '5053827000001', icon: 'breakfast_dining', loc: {top:45, left:50} },
         { id: '10', name: 'Marmellata Fragola', price: 2.20, barcode: '8001000000001', icon: 'kitchen', loc: {top:60, left:50} },
         { id: '11', name: 'Detersivo Dash 25 Lav.', price: 5.99, barcode: '8001090000001', icon: 'wash', loc: {top:60, left:69} },
@@ -715,11 +768,27 @@
 
     function finishShopping() { document.getElementById('page-exit').classList.remove('active'); switchTab('offers'); }
     
+    // --- CROWD WIDGET AGGIORNATO ---
     function initCrowd() { 
         setInterval(() => {
-            const count = Math.floor(Math.random() * 101); const label = document.getElementById('crowd-status'); const dot = document.querySelector('.crowd-widget .dot'); let color;
-            if (count <= 50) color = '#2ed573'; else if (count <= 75) color = '#ffa502'; else color = '#ff4757';
-            label.innerText = "Affluenza: " + count + " presenti"; dot.style.background = color; dot.style.boxShadow = `0 0 8px ${color}`;
+            const count = Math.floor(Math.random() * 101); 
+            const label = document.getElementById('crowd-status'); 
+            const dot = document.querySelector('.crowd-widget .dot'); 
+            let color;
+            
+            if (count <= 50) color = '#2ed573'; 
+            else if (count <= 75) color = '#ffa502'; 
+            else color = '#ff4757';
+            
+            // Logica Responsive per il testo: se lo schermo è piccolo, accorcia
+            if (window.innerWidth < 380) {
+                label.innerText = count + " presenti"; 
+            } else {
+                label.innerText = "Affluenza: " + count + " presenti"; 
+            }
+
+            dot.style.background = color; 
+            dot.style.boxShadow = `0 0 8px ${color}`;
         }, 4000); 
     }
 
