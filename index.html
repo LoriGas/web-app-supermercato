@@ -71,8 +71,18 @@
         header { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); padding: 15px 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
         .app-logo { font-size: 20px; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
         
-        .crowd-widget { display: flex; align-items: center; background: #eef2ff; color: var(--primary-dark); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        /* Modificato: Widget Affluenza più esplicito */
+        .crowd-widget { 
+            display: flex; align-items: center; background: #eef2ff; color: var(--primary-dark); 
+            padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; 
+            border: 1px solid rgba(0, 85, 255, 0.1);
+        }
+        .dot { 
+            height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; 
+            box-shadow: 0 0 5px rgba(46, 213, 115, 0.5); 
+            animation: blinkRed 2s infinite; /* Aggiunto effetto pulsante */
+        }
+        @keyframes blinkRed { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
         /* --- LAYOUT GENERALE --- */
         .page { display: none; padding: 15px; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -101,7 +111,7 @@
         @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
         
-        /* --- AGGIUNTO: Animazione per la spunta dello scanner --- */
+        /* --- Animazione per la spunta dello scanner --- */
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 
         h2 { font-size: 22px; margin-bottom: 15px; font-weight: 800; color: #111; }
@@ -181,7 +191,7 @@
         .qty-box { display: flex; align-items: center; background: #f0f2f5; border-radius: 10px; padding: 4px; }
         .qty-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--primary); cursor: pointer; background: white; border-radius: 8px; }
         
-        /* --- AGGIORNATO: Scanner Feedback Overlay e Tick Icon --- */
+        /* --- Scanner Feedback Overlay e Tick Icon --- */
         #scan-overlay {
             position: absolute; top:0; left:0; width:100%; height:100%; 
             border: 4px solid var(--success); box-sizing: border-box; 
@@ -236,7 +246,10 @@
 
 <header id="main-header" class="hidden">
     <div class="app-logo"><i class="material-icons">storefront</i> YourNextMarket</div>
-    <div class="crowd-widget"><span class="dot" style="background: green;"></span><span id="crowd-status">Wait...</span></div>
+    <div class="crowd-widget">
+        <span class="dot" style="background: green;"></span>
+        <span id="crowd-status">LIVE: Caricamento...</span>
+    </div>
 </header>
 
 <div id="page-offers" class="page">
@@ -653,10 +666,12 @@
             addToCart(p.id, 1);
             fb.innerHTML = `<span style="color:var(--success)">AGGIUNTO: ${p.name}</span>`;
             
-            // AGGIORNATO: Mostra l'overlay con il tick (usando flex per centrare)
+            // AGGIORNATO: Mostra l'overlay con il tick e usa vibrazione DOPPIA per feedback migliore
             overlay.style.display = 'flex';
             
-            if(navigator.vibrate) navigator.vibrate(200);
+            // Nuova vibrazione: Bzz-pausa-Bzz
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            
             setTimeout(() => { scanCooldown = false; fb.innerText = ""; overlay.style.display = 'none'; }, 2500);
         } else {
             scanCooldown = true;
@@ -731,7 +746,13 @@
         switchTab('offers');
     }
 
-    function initCrowd() { setInterval(()=>document.getElementById('crowd-status').innerText = Math.floor(Math.random()*50+10)+" persone", 4000); }
+    // AGGIORNATO: Logica affluenza più esplicita
+    function initCrowd() { 
+        setInterval(() => {
+            const count = Math.floor(Math.random()*50+10);
+            document.getElementById('crowd-status').innerText = "LIVE: " + count + " presenti";
+        }, 4000); 
+    }
 
     checkAuth();
 </script>
