@@ -91,7 +91,7 @@
         .dot { 
             height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; 
             box-shadow: 0 0 5px rgba(46, 213, 115, 0.5); 
-            transition: background 0.5s, box-shadow 0.5s; /* Transizione fluida colore */
+            transition: background 0.5s, box-shadow 0.5s;
         }
 
         /* --- LAYOUT GENERALE --- */
@@ -124,8 +124,6 @@
         h2 { font-size: 22px; margin-bottom: 15px; font-weight: 800; color: #111; }
 
         /* --- CARDS & UI --- */
-        .promo-banner { background: linear-gradient(120deg, var(--primary) 0%, var(--accent) 100%); color: white; padding: 25px; border-radius: 20px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,85,255,0.25); position: relative; overflow: hidden; }
-        
         .gastro-banner { 
             background: white; padding: 20px; border-radius: 20px; margin-bottom: 25px; 
             border: 1px solid #ffefe0; box-shadow: 0 5px 20px rgba(255, 112, 67, 0.08);
@@ -161,6 +159,8 @@
         .supermarket-floor { position: relative; width: 100%; height: 350px; background: #f4f6f9; border: 2px solid #333; border-radius: 12px; margin-top: 20px; overflow: hidden; }
         
         .shelf { position: absolute; border-radius: 4px; color: rgba(255,255,255,0.9); font-size: 9px; font-weight:800; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.1; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+        
+        /* ZONES */
         .shelf.zone-fridge { background: #00a8ff; border-bottom: 4px solid #0097e6; } 
         .shelf.zone-bakery { background: #e67e22; border-bottom: 4px solid #d35400; }
         .shelf.zone-pantry { background: #7f8c8d; border-bottom: 4px solid #2c3e50; }
@@ -259,6 +259,8 @@
     </div>
 </header>
 
+<div id="page-offers" class="page">
+    <div style="margin-top:10px;"></div>
     <div class="gastro-banner" onclick="openSubPage('booking')">
         <div>
             <div style="font-weight: 800; font-size: 18px; color:#d35400">Gastronomia</div>
@@ -269,7 +271,7 @@
         </div>
     </div>
 
-    <h2>Offerte per te</h2>
+    <h2>In Evidenza</h2>
     <div id="offers-list"></div>
 </div>
 
@@ -393,11 +395,11 @@
     <div class="map-frame">
         <h3 style="text-align:center; margin-top:0;">Mappa Reparti</h3>
         <div class="supermarket-floor">
-            <div class="shelf zone-fridge" style="top:0; left:0; width:40%; height:25%;">LATTICINI<br>& FRESCHI</div>
+            <div class="shelf zone-fridge" style="top:0; left:0; width:40%; height:25%;">FRIGO &<br>LATTICINI</div>
             <div class="shelf zone-bakery" style="top:0; right:0; width:40%; height:30%;">FORNO &<br>GASTRONOMIA</div>
-            <div class="shelf zone-pantry" style="top:40%; left:10%; width:15%; height:40%;">DISPENSA<br>(Corsia 1)</div>
-            <div class="shelf zone-tech" style="top:40%; right:15%; width:15%; height:40%;">TECH &<br>HOME</div>
-            <div class="shelf zone-fridge" style="bottom:15%; left:10%; width:20%; height:10%;">ACQUA &<br>BIBITE</div>
+            <div class="shelf zone-pantry" style="top:40%; left:10%; width:15%; height:40%;">PASTA &<br>CONSERVE</div>
+            <div class="shelf zone-tech" style="top:40%; right:15%; width:15%; height:40%;">ELETTRONICA<br>& CASA</div>
+            <div class="shelf zone-fridge" style="bottom:15%; left:10%; width:20%; height:10%;">ACQUA &<br>VINI</div>
             <div class="entrance" style="position:absolute; bottom:0; left:45%; width:40px; height:8px; background:var(--success);"></div>
             <div style="position:absolute; bottom:10px; left:42%; font-size:8px; color:#333; font-weight:bold;">INGRESSO</div>
             <div class="pin-user" style="bottom:25px; left:50%;"></div>
