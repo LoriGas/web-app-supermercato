@@ -24,7 +24,7 @@
         
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); padding-bottom: 90px; -webkit-font-smoothing: antialiased; }
         
-        /* --- AUTH SCREENS (UNIFORMATI) --- */
+        /* --- AUTH SCREENS (LOGIN & REGISTRAZIONE) --- */
         .auth-page { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
@@ -50,7 +50,7 @@
         .login-title { font-size: 26px; font-weight: 800; color: var(--text); margin: 0 0 8px 0; letter-spacing: -0.5px;}
         .login-subtitle { font-size: 15px; color: #888; margin-bottom: 30px; line-height: 1.4; }
 
-        /* Input Container per icone */
+        /* Input con Icone */
         .input-group { position: relative; margin-bottom: 15px; }
         .input-group i { 
             position: absolute; left: 18px; top: 50%; transform: translateY(-50%); 
@@ -58,14 +58,14 @@
         }
         
         .login-input { 
-            width: 100%; padding: 18px 18px 18px 50px; /* Padding a sinistra per l'icona */
+            width: 100%; padding: 18px 18px 18px 50px; /* Spazio per icona */
             border: 2px solid transparent; background: var(--input-bg);
             border-radius: 18px; box-sizing: border-box; font-size: 16px; outline: none; transition: all 0.2s;
             font-weight: 600; color: var(--text);
         }
         .login-input::placeholder { color: #bbb; font-weight: 500; }
         .login-input:focus { border-color: var(--primary); background: white; box-shadow: 0 4px 15px rgba(0,85,255,0.05); }
-        .login-input:focus + i { color: var(--primary); } /* Colora icona al focus */
+        .login-input:focus + i { color: var(--primary); }
 
         .login-btn { 
             width: 100%; padding: 20px; background: var(--text); color: white; border: none; 
@@ -91,9 +91,8 @@
         .dot { 
             height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; 
             box-shadow: 0 0 5px rgba(46, 213, 115, 0.5); 
-            animation: blinkRed 2s infinite;
+            transition: background 0.5s, box-shadow 0.5s; /* Transizione fluida colore */
         }
-        @keyframes blinkRed { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
         /* --- LAYOUT GENERALE --- */
         .page { display: none; padding: 15px; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -255,7 +254,7 @@
 <header id="main-header" class="hidden">
     <div class="app-logo"><i class="material-icons">storefront</i> YourNextMarket</div>
     <div class="crowd-widget">
-        <span class="dot" style="background: green;"></span>
+        <span class="dot" style="background: #2ed573;"></span>
         <span id="crowd-status">LIVE: Caricamento...</span>
     </div>
 </header>
@@ -674,7 +673,10 @@
             addToCart(p.id, 1);
             fb.innerHTML = `<span style="color:var(--success)">AGGIUNTO: ${p.name}</span>`;
             
+            // Overlay visivo
             overlay.style.display = 'flex';
+            
+            // Feedback Tattile: Doppia vibrazione
             if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             
             setTimeout(() => { scanCooldown = false; fb.innerText = ""; overlay.style.display = 'none'; }, 2500);
@@ -746,10 +748,28 @@
         switchTab('offers');
     }
 
+    // --- AFFLUENZA LIVE (SEMAFORO) ---
     function initCrowd() { 
         setInterval(() => {
-            const count = Math.floor(Math.random()*50+10);
-            document.getElementById('crowd-status').innerText = "LIVE: " + count + " presenti";
+            // Max 100 persone
+            const count = Math.floor(Math.random() * 101); 
+            
+            const label = document.getElementById('crowd-status');
+            const dot = document.querySelector('.crowd-widget .dot');
+            let color;
+
+            if (count <= 50) {
+                color = '#2ed573'; // VERDE (0-50)
+            } else if (count <= 75) {
+                color = '#ffa502'; // GIALLO/ARANCIO (51-75)
+            } else {
+                color = '#ff4757'; // ROSSO (76-100)
+            }
+            
+            label.innerText = "LIVE: " + count + " presenti";
+            dot.style.background = color;
+            dot.style.boxShadow = `0 0 8px ${color}`;
+            
         }, 4000); 
     }
 
