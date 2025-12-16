@@ -223,6 +223,35 @@
             color: #666; margin-right: 15px; flex-shrink: 0;
         }
         .service-option.selected .service-icon { background: var(--primary); color: white; }
+
+        /* --- STILI RESPONSIVE MODALE SERVIZI --- */
+        /* Default (Mobile): Inizia dall'alto per permettere lo scroll con tastiera */
+        .service-modal-container {
+            align-items: flex-start; 
+            overflow-y: auto; 
+            justify-content: flex-start;
+            padding: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+        .service-modal-card {
+            max-width: 320px; 
+            margin: auto;       /* Questo fa la magia: centra se c'è spazio, scrolla se non c'è */
+            margin-bottom: 50px; 
+            margin-top: auto;
+        }
+
+        /* Desktop (Schermi grandi): Forza al centro perfetto */
+        @media (min-width: 768px) {
+            .service-modal-container {
+                align-items: center;
+                justify-content: center;
+                overflow-y: hidden; /* Niente scroll su PC se entra tutto */
+            }
+            .service-modal-card {
+                margin: 0; /* Reset margins per flexbox centering */
+            }
+        }
     </style>
 </head>
 <body>
@@ -383,8 +412,8 @@
     </div>
 </div>
 
-<div id="service-modal" class="auth-page" style="display:none; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px); overflow-y: auto; justify-content: flex-start; padding: 0;">
-    <div class="login-card" style="max-width: 320px; margin: auto; margin-bottom: 50px; margin-top: auto;">
+<div id="service-modal" class="auth-page service-modal-container" style="display:none;">
+    <div class="login-card service-modal-card">
         <i class="material-icons" style="font-size: 50px; color: var(--primary); margin-bottom: 10px;">shopping_bag</i>
         <h2 style="font-size: 22px; margin-bottom: 10px;">Spesa Completata!</h2>
         <p style="color:#666; margin-bottom: 20px;">Vuoi scegliere uno dei servizi aggiuntivi?</p>
@@ -499,6 +528,23 @@
     let scanCooldown = false;
     let userReservations = [];
     let selectedServiceType = null;
+
+    // --- NUOVA FUNZIONE: FEEDBACK SONORO (BEEP) ---
+    function playBeep() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.value = 880; 
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.1);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.1);
+    }
 
     // --- LOGICA APP ---
     function createProductCard(p, isSearch = false) {
@@ -671,9 +717,14 @@
         const overlay = document.getElementById('scan-overlay');
         if(p) {
             scanCooldown = true; addToCart(p.id, 1);
+            
+            // --- FEEDBACK AUDIO E TATTILE ---
+            if(navigator.vibrate) navigator.vibrate([100]); // Vibrazione (Android)
+            playBeep(); // Suono (iOS + Android)
+            // ---------------------------------
+
             fb.innerHTML = `<span style="color:var(--success)">AGGIUNTO: ${p.name}</span>`;
             overlay.style.display = 'flex';
-            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             setTimeout(() => { scanCooldown = false; fb.innerText = ""; overlay.style.display = 'none'; }, 2500);
         } else {
             scanCooldown = true; fb.innerText = "Non riconosciuto"; setTimeout(() => { scanCooldown = false; fb.innerText = ""; }, 2000);
