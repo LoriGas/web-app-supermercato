@@ -269,7 +269,7 @@
         <p id="user-email-display" style="color:#888; margin:0;">--</p>
     </div>
     <div style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.03);">
-        <div class="menu-item" onclick="openSubPage('orders')"><span style="font-weight: 500;">I miei ordini</span> <i class="material-icons" style="color:#ddd">chevron_right</i></div>
+        <div class="menu-item" onclick="openSubPage('orders')"><span style="font-weight: 500;">Le mie spese</span> <i class="material-icons" style="color:#ddd">chevron_right</i></div>
         <div class="menu-item" onclick="openSubPage('reservations')"><span style="font-weight: 500;">Prenotazioni Gastronomia</span> <i class="material-icons" style="color:#ddd">chevron_right</i></div>
         <div class="menu-item" onclick="openSubPage('payments')"><span style="font-weight: 500;">Metodi di Pagamento</span> <i class="material-icons" style="color:#ddd">chevron_right</i></div>
         <div class="menu-item" onclick="doLogout()" style="color: var(--danger);"><span style="font-weight: 700;">Esci dall'app</span> <i class="material-icons">logout</i></div>
@@ -290,12 +290,8 @@
 </div>
 
 <div id="sub-orders" class="subpage">
-    <div class="subpage-header"><button class="btn-back" onclick="closeSubPage()"><i class="material-icons">arrow_back</i></button><h2>Storico Ordini</h2></div>
-    <div class="order-card">
-        <div class="order-head"><span>Spesa del 10/12/2023</span> <span style="color:var(--primary)">€ 45.20</span></div>
-        <div style="font-size:12px; color:#666; margin-bottom:10px;">12 Articoli • YourNextMarket Milano</div>
-        <span class="status-badge status-done">Completato</span>
-    </div>
+    <div class="subpage-header"><button class="btn-back" onclick="closeSubPage()"><i class="material-icons">arrow_back</i></button><h2>Storico Spese</h2></div>
+    <div id="history-list"></div>
 </div>
 
 <div id="sub-payments" class="subpage">
@@ -499,6 +495,24 @@
         `).join('');
     }
 
+    // --- NUOVA LOGICA: RENDER STORICO SPESE ---
+    function renderHistory() {
+        const list = document.getElementById('history-list');
+        // Se non esiste lo storico o è vuoto
+        if(!currentUser.history || currentUser.history.length === 0) {
+            list.innerHTML = '<div style="text-align:center; color:#999; margin-top:40px;">Nessuna spesa passata</div>';
+            return;
+        }
+
+        list.innerHTML = currentUser.history.map(trip => `
+            <div class="order-card">
+                <div class="order-head"><span>Spesa del ${trip.date}</span> <span style="color:var(--primary)">€ ${trip.total.toFixed(2)}</span></div>
+                <div style="font-size:12px; color:#666; margin-bottom:10px;">${trip.items} Articoli • ${trip.shop}</div>
+                <span class="status-badge status-done">Completato</span>
+            </div>
+        `).join('');
+    }
+
     function openMap(id) {
         const p = database.find(x=>x.id===id);
         const pin = document.getElementById('target-pin');
@@ -511,7 +525,14 @@
 
     function checkAuth() {
         const storedUser = localStorage.getItem('ynm_user_v3');
-        if (storedUser) { currentUser = JSON.parse(storedUser); showApp(); } else { document.getElementById('view-login').classList.remove('hidden-auth'); }
+        if (storedUser) { 
+            currentUser = JSON.parse(storedUser); 
+            // Assicurati che l'array history esista
+            if(!currentUser.history) currentUser.history = [];
+            showApp(); 
+        } else { 
+            document.getElementById('view-login').classList.remove('hidden-auth'); 
+        }
     }
     function toggleAuth(view) {
         document.getElementById('view-login').classList.add('hidden-auth'); document.getElementById('view-register').classList.add('hidden-auth');
@@ -523,12 +544,16 @@
         const savedStr = localStorage.getItem('ynm_db_' + email);
         if(!savedStr) { alert("Utente non trovato."); return; }
         const savedUser = JSON.parse(savedStr);
-        if(savedUser.pass === pass) { currentUser = savedUser; finalizeLogin(); } else { alert("Password errata!"); }
+        if(savedUser.pass === pass) { 
+            currentUser = savedUser; 
+            if(!currentUser.history) currentUser.history = []; // Init history se manca
+            finalizeLogin(); 
+        } else { alert("Password errata!"); }
     }
     function performRegister() {
         const name = document.getElementById('reg-name').value; const email = document.getElementById('reg-email').value; const pass = document.getElementById('reg-pass').value;
         if(!name || !email || !pass) { alert("Compila tutti i campi"); return; }
-        const newUser = { name: name, email: email, pass: pass };
+        const newUser = { name: name, email: email, pass: pass, history: [] };
         localStorage.setItem('ynm_db_' + email, JSON.stringify(newUser)); currentUser = newUser; finalizeLogin();
     }
     function finalizeLogin() { localStorage.setItem('ynm_user_v3', JSON.stringify(currentUser)); location.reload(); }
@@ -551,7 +576,10 @@
         if(tab === 'cart') renderCart();
         closeSubPage();
     }
-    function openSubPage(id) { document.getElementById('sub-' + id).classList.add('active'); }
+    function openSubPage(id) { 
+        document.getElementById('sub-' + id).classList.add('active'); 
+        if(id === 'orders') renderHistory(); // Aggiorna lo storico quando apri la pagina
+    }
     function closeSubPage() { document.querySelectorAll('.subpage').forEach(el => el.classList.remove('active')); }
 
     function renderOffers() {
@@ -650,6 +678,34 @@
     }
 
     function finalizeExit(message) {
+        // --- NUOVO: SALVATAGGIO NELLO STORICO ---
+        // Calcola totale e articoli
+        let currentTotal = 0;
+        let currentItems = 0;
+        Object.keys(cart).forEach(id => {
+            const p = database.find(x=>x.id===id);
+            const pr = p.discount || p.price;
+            currentTotal += pr * cart[id];
+            currentItems += cart[id];
+        });
+
+        // Crea oggetto spesa
+        const newTrip = {
+            date: new Date().toLocaleDateString('it-IT'),
+            total: currentTotal,
+            items: currentItems,
+            shop: "YourNextMarket Milano"
+        };
+
+        // Aggiungi all'inizio dell'array storico
+        if(!currentUser.history) currentUser.history = [];
+        currentUser.history.unshift(newTrip);
+
+        // Salva in localStorage (sia sessione corrente che database persistente simulato)
+        localStorage.setItem('ynm_user_v3', JSON.stringify(currentUser));
+        localStorage.setItem('ynm_db_' + currentUser.email, JSON.stringify(currentUser));
+        // ----------------------------------------
+
         const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=EXIT-PASSPHRASE-" + Date.now();
         document.getElementById('qr-exit-img').src = qrUrl;
         document.getElementById('exit-msg').innerText = message;
