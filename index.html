@@ -316,12 +316,12 @@
             <div class="shelf-block zone-orange" style="top:0; left:20%; width:25%; height:20%;">FORNO<br>PANE</div>
             <div class="shelf-block zone-red" style="top:0; right:20%; width:25%; height:20%;">MACELLERIA<br>PESCHERIA</div>
 
-            <div class="shelf-block zone-gray" style="top:35%; left:25%; width:12%; height:35%;">CORSIA 1<br>Dispensa</div>
-            <div class="shelf-block zone-gray" style="top:35%; left:44%; width:12%; height:35%;">CORSIA 2<br>Colazione</div>
-            <div class="shelf-block zone-gray" style="top:35%; left:63%; width:12%; height:35%;">CORSIA 3<br>Casa</div>
+            <div class="shelf-block zone-gray" style="top:35%; left:25%; width:12%; height:35%;">PASTA &<br>SUGHI</div>
+            <div class="shelf-block zone-gray" style="top:35%; left:44%; width:12%; height:35%;">DOLCI &<br>CAFFÈ</div>
+            <div class="shelf-block zone-gray" style="top:35%; left:63%; width:12%; height:35%;">CURA &<br>PULIZIA</div>
 
             <div class="shelf-block zone-blue" style="bottom:20%; right:0; width:15%; height:30%;">BIBITE<br>& VINI</div>
-            <div class="shelf-block zone-purple" style="top:30%; right:0; width:15%; height:30%;">TECH<br>& CURA</div>
+            <div class="shelf-block zone-purple" style="top:30%; right:0; width:15%; height:30%;">TECH<br>& CASA</div>
 
             <div class="entrance-zone"></div>
             <div style="position:absolute; bottom:6px; left:45%; font-size:8px; font-weight:bold;">ENTRATA</div>
@@ -359,34 +359,22 @@
 </div>
 
 <script>
-    // --- DATABASE ESTESO (30 Prodotti) ---
-    // Mapping Coordinate Mappa:
-    // Ortofrutta: bottom-left (top:80%, left:15%)
-    // Frigo Latticini: left-mid (top:45%, left:8%)
-    // Forno: top-left (top:10%, left:32%)
-    // Macelleria: top-right (top:10%, right:32% -> left:68%)
-    // Corsia 1 (Dispensa): center-left (top:50%, left:30%)
-    // Corsia 2 (Colazione): center (top:50%, left:50%)
-    // Corsia 3 (Casa): center-right (top:50%, left:70%)
-    // Bibite: bottom-right (top:75%, right:8% -> left:92%)
-    // Tech: top-right-wall (top:45%, right:8% -> left:92%)
-
     const database = [
-        // DISPENSA (Corsia 1)
+        // PASTA & SUGHI (Ex Corsia 1)
         { id: '1', name: 'Pasta Barilla 500g', price: 1.20, barcode: '8076809513753', icon: 'restaurant', loc: {top:52, left:31} },
         { id: '2', name: 'Passata Mutti 700g', price: 1.45, barcode: '8005110170305', icon: 'local_dining', loc: {top:52, left:31} },
         { id: '3', name: 'Olio EVO Carapelli 1L', price: 6.99, barcode: '8002470001000', icon: 'liquor', loc: {top:60, left:31} },
         { id: '4', name: 'Riso Gallo 1kg', price: 2.80, barcode: '8001420000001', icon: 'grain', loc: {top:45, left:31} },
         { id: '5', name: 'Tonno Rio Mare 3x80g', price: 4.50, barcode: '8004030000001', icon: 'set_meal', loc: {top:55, left:31} },
         
-        // COLAZIONE & DOLCI (Corsia 2)
+        // DOLCI & CAFFÈ (Ex Corsia 2)
         { id: '6', name: 'Nutella 750g', price: 6.50, discount: 4.99, barcode: '8000500003787', icon: 'cookie', loc: {top:52, left:50} },
         { id: '7', name: 'Biscotti Mulino Bianco', price: 2.99, barcode: '8076809500001', icon: 'cookie', loc: {top:52, left:50} },
         { id: '8', name: 'Caffè Lavazza 250g', price: 3.99, barcode: '8000070010001', icon: 'coffee', loc: {top:45, left:50} },
         { id: '9', name: 'Cereali Kellogg\'s', price: 3.50, barcode: '5053827000001', icon: 'breakfast_dining', loc: {top:45, left:50} },
         { id: '10', name: 'Marmellata Fragola', price: 2.20, barcode: '8001000000001', icon: 'kitchen', loc: {top:60, left:50} },
 
-        // CASA & IGIENE (Corsia 3)
+        // CURA & PULIZIA (Ex Corsia 3)
         { id: '11', name: 'Detersivo Dash 25 Lav.', price: 5.99, barcode: '8001090000001', icon: 'wash', loc: {top:60, left:69} },
         { id: '12', name: 'Shampoo Pantene', price: 3.20, barcode: '5410076000001', icon: 'shower', loc: {top:50, left:69} },
         { id: '13', name: 'Dentifricio Colgate', price: 1.80, barcode: '8718951000001', icon: 'clean_hands', loc: {top:45, left:69} },
@@ -413,7 +401,7 @@
         { id: '26', name: 'Petto di Pollo 500g', price: 5.50, barcode: '8000000000011', icon: 'restaurant', loc: {top:10, left:68} },
         { id: '27', name: 'Hamburger 2pz', price: 4.00, barcode: '8000000000012', icon: 'lunch_dining', loc: {top:10, left:68} },
 
-        // TECH (Parete Destra)
+        // TECH & CASA (Parete Destra)
         { id: '28', name: 'iPhone Case', price: 15.00, discount: 9.99, barcode: '444444', icon: 'smartphone', loc: {top:45, left:92} },
         { id: '29', name: 'Cuffie Sony', price: 35.00, barcode: '555555', icon: 'headphones', loc: {top:45, left:92} },
         { id: '30', name: 'Caricabatterie USB', price: 12.00, barcode: '666666', icon: 'electrical_services', loc: {top:55, left:92} }
